@@ -117,5 +117,3 @@ def haircut_sharpe_ratio(sharpe_ratio, num_tests, N, k=1, freq='annual', method=
     SR_adj = t_adj / np.sqrt(N)
 
     return SR_adj
-
-print(haircut_sharpe_ratio(1,100,8,1,'annual', 'bonferroni'))
