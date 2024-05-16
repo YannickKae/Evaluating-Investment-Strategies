@@ -64,9 +64,9 @@ $$
 p_{k} = \frac{k \times \alpha}{m \times \left(\frac{1}{1} + \frac{1}{2} + \ldots + \frac{1}{m}\right)}
 $$
 
-## Adjusting the Sharpe Ratio (Haircut)
+## Adjusting the Sharpe Ratio
 
-The Sharpe Ratio is adjusted (haircut) by plugging the adjusted test statistic into the rearranged equation to compute the $t$-statistic.
+The Sharpe Ratio is adjusted by plugging the adjusted test statistic into the rearranged equation to compute the $t$-statistic.
 
 $$
 SR_{adj} = \frac{t_{adj}}{\sqrt{N}}
