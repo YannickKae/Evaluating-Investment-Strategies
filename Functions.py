@@ -28,7 +28,7 @@ def t_statistic(sharpe_ratio, N, freq='annual'):
 def bonferroni_t_statistic(t_statistics, significance_level = 0.05):
     num_tests = len(t_statistics)
     adjusted_alpha = np.array([significance_level / num_tests for _ in range(num_tests)])
-    z_critical = norm.ppf(1 - adjusted_alpha / 2)
+    z_critical = scipy.stats.norm.ppf(1 - adjusted_alpha / 2)
 
     results = pd.DataFrame({
         'Test Number': np.arange(1, num_tests + 1),
@@ -45,7 +45,7 @@ def holm_t_statistics(t_statistics, significance_level = 0.05):
     sorted_indices = np.argsort(t_statistics)[::-1]  # Sort in descending order, because we use t-Statistics
     sorted_t_statistics = np.array(t_statistics)[sorted_indices]
     adjusted_alpha = np.array([significance_level / (num_tests + 1 - k) for k in range(1, num_tests + 1)])
-    z_critical = norm.ppf(1 - adjusted_alpha / 2)
+    z_critical = scipy.stats.norm.ppf(1 - adjusted_alpha / 2)
 
     results = pd.DataFrame({
         'Test Number': sorted_indices + 1,
@@ -65,7 +65,7 @@ def bhy_t_statistics(t_statistics, significance_level = 0.05):
     sorted_indices = np.argsort(t_statistics)[::-1] # Sort in descending order, because we use t-Statistics
     sorted_t_statistics = np.array(t_statistics)[sorted_indices]
     adjusted_alpha = np.array([k * significance_level / (num_tests * c_m) for k in range(1, num_tests + 1)])
-    z_critical = norm.ppf(1 - adjusted_alpha / 2)
+    z_critical = scipy.stats.norm.ppf(1 - adjusted_alpha / 2)
 
     results = pd.DataFrame({
         'Test Number': sorted_indices + 1,
@@ -93,7 +93,7 @@ def necessary_t_statistics(t_statistics, significance_level, method='bonferroni'
 # Sharpe Ratio Haircut
 def haircut_sharpe_ratio(sharpe_ratio, num_tests, N, k=1, freq='annual', method='bonferroni'):
     t = t_statistic(sharpe_ratio, N, freq='annual')
-    p = 2 * norm.sf(abs(t))
+    p = 2 * scipy.stats.norm.sf(abs(t))
     if method == 'bonferroni':
         p_adj = min(p * num_tests, 1)
     elif method == 'holm':
@@ -103,7 +103,7 @@ def haircut_sharpe_ratio(sharpe_ratio, num_tests, N, k=1, freq='annual', method=
         p_adj = min(p * num_tests * c_m / k, 1)
     else:
         raise ValueError("Method must be 'bonferroni', 'holm', or 'bhy'")
-    t_adj = norm.ppf(1 - p_adj / 2)
+    t_adj = scipy.stats.norm.ppf(1 - p_adj / 2)
     SR_adj = t_adj / np.sqrt(N)
 
     return SR_adj
