@@ -25,7 +25,8 @@ $$
 
 ### $t$-Statistic
 
-The $t$-Statistic here refers to the average excess return an can be be simply computed as follows:
+The $t$-Statistic here refers to the average excess return and can be be simply computed as follows:
+
 $$
 t = SR \times \sqrt{N}
 $$
