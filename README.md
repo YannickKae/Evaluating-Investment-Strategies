@@ -48,7 +48,7 @@ $$
 
 ### Holm Method
 
-The Holm Method is a stepwise correction that is less conservative than the Bonferroni Method. It adjusts the $p$-values sequentially, starting from the smallest, and ensures that the significance level is maintained across multiple tests.
+The Holm Method is a stepwise correction that is less conservative than the Bonferroni Method. It adjusts the $p$-values sequentially, starting from the most significant one, and ensures that the type 1 error rate is maintained across multiple tests.
 
 $$
 p_{k} = \frac{\alpha}{m + 1 - k}
@@ -66,7 +66,7 @@ $$
 
 ## Adjusting the Sharpe Ratio
 
-The Sharpe Ratio is adjusted by plugging the adjusted test statistic into the rearranged equation to compute the $t$-statistic.
+The Sharpe Ratio is adjusted by plugging the adjusted  $t$-statistic into the rearranged equation to compute the $t$-statistic from the Sharpe Ratio.
 
 $$
 SR_{adj} = \frac{t_{adj}}{\sqrt{N}}
