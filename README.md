@@ -25,7 +25,7 @@ $$
 
 ### $t$-Statistic
 
-The $t$-Statistic here refers to the average excess return and can be be simply computed as follows:
+The $t$-Statistic here refers to the average excess return and is a scaled function of the Sharpe Ratio:
 
 $$
 t = \frac{\mu - r_f}{\sigma} \times \sqrt{N} = SR \times \sqrt{N}
