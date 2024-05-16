@@ -48,7 +48,7 @@ $$
 
 ### Holm Method
 
-The Holm Method is a stepwise correction that is less conservative than the Bonferroni Method. It adjusts the $p$-values sequentially, starting from the smallest p-value, and ensures that the significance level is maintained across multiple tests. The Holm method outputs adjusted p-values that control the family-wise error rate (FWER), which is the probability of making one or more false discoveries among all the tests.
+The Holm Method is a stepwise correction that is less conservative than the Bonferroni Method. It adjusts the $p$-values sequentially, starting from the smallest, and ensures that the significance level is maintained across multiple tests.
 
 $$
 p_{k} = \frac{\alpha}{m + 1 - k}
@@ -63,6 +63,13 @@ The BHY Method controls the False Discovery Rate (FDR) and is less conservative 
 $$
 p_{k} = \frac{k \times \alpha}{m \times \left(\frac{1}{1} + \frac{1}{2} + \ldots + \frac{1}{m}\right)}
 $$
+
+<p align="center">
+  <img src="Figure_1.png" alt="k" style="width:100%">
+</p>
+<p align="center">
+  <i>Adjusted significance levels for m=10</i>
+</p>
 
 ## Adjusting the Sharpe Ratio (Haircut)
 
