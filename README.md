@@ -1,8 +1,15 @@
-# Trading Strategy Evaluation Functions
+# Investment Strategy Evaluation
 
-This repository contains functions for evaluating trading strategies as described in the paper "Evaluating Trading Strategies". The functions implement various statistical techniques to assess the significance of trading strategies considering multiple testing.
+<p align="center">
+  <img src="monte_carlo_simulation_log_scale.png" alt="MC" style="width:100%">
+</p>
+<p align="center">
+  <i>Monte Carlo Simulation of a Sharpe 1.0 Strategy</i>
+</p>
 
-## 1. Calculating the Sharpe Ratio and T-Statistic
+This repository contains functions for evaluating investment strategies considering multiple testing.
+
+## Sharpe Ratio and $t$-Statistic
 
 ### Sharpe Ratio
 
@@ -27,7 +34,7 @@ $$
 - $SR$: Sharpe Ratio
 - $N$: Number of returns
 
-## 2. Multiple Testing Adjustments
+## Multiple Testing Adjustments
 
 ### Bonferroni Method
 
@@ -64,6 +71,6 @@ $$
 - $m$: Number of tests
 - $k$: Rank of the test by descending p-value
 
-## 4. Adjusting the Sharpe Ratio by Haircut
+## Adjusting the Sharpe Ratio by Haircut
 
-The Sharpe Ratio is adjusted (haircut) considering multiple testing adjustments by mapping the adjusted test statistic back to the Sharpe Ratio.
+The Sharpe Ratio is adjusted (haircut) by plugging the adjusted test statistic into the equation to compute the $t$-statistic.
