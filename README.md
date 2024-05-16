@@ -67,3 +67,7 @@ $$
 ## Adjusting the Sharpe Ratio (Haircut)
 
 The Sharpe Ratio is adjusted (haircut) by plugging the adjusted test statistic into the equation to compute the $t$-statistic.
+
+$$
+SR_{adj} = \frac{t_{adj}}{\sqrt{N}}
+$$
