@@ -54,8 +54,6 @@ $$
 p_{k} = \frac{\alpha}{m + 1 - k}
 $$
 
-- $\alpha$: Significance level
-- $m$: Number of tests
 - $k$: Index of the test sorted by ascending $p$-value
 
 ### Benjamini-Hochberg-Yekutieli Method
