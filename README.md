@@ -28,10 +28,9 @@ $$
 The $t$-Statistic here refers to the average excess return and can be be simply computed as follows:
 
 $$
-t = SR \times \sqrt{N}
+t = \frac{\mu - r_f}{\sigma} \times \sqrt{N} = SR \times \sqrt{N}
 $$
 
-- $SR$: Sharpe Ratio
 - $N$: Number of returns
 
 ## Multiple Testing Adjustments
