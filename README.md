@@ -44,7 +44,7 @@ $$
 p = \frac{\alpha}{m}
 $$
 
-- $p$: unadjusted $p$-value
+- $\alpha$: Significance level
 - $m$: Number of tests
 
 ### Holm Method
