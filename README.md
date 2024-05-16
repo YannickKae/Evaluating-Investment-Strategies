@@ -25,8 +25,7 @@ $$
 
 ### $t$-Statistic
 
-The $t$-Statistic is used to assess the significance of the Sharpe Ratio. It scales the Sharpe Ratio by the square root of the number of observations, which helps determine if the observed Sharpe Ratio is statistically significant.
-
+The $t$-Statistic here refers to the average excess return an can be be simply computed as follows:
 $$
 t = SR \times \sqrt{N}
 $$
