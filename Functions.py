@@ -50,7 +50,7 @@ def bonferroni_t_statistic(t_statistics, significance_level = 0.05):
 
 def holm_t_statistics(t_statistics, significance_level = 0.05):
     num_tests = len(t_statistics)
-    sorted_indices = np.argsort(t_statistics)[::-1]  # Sort in descending order
+    sorted_indices = np.argsort(t_statistics)[::-1]  # Sort in descending order, because we use t-Statistics
     sorted_t_statistics = np.array(t_statistics)[sorted_indices]
     adjusted_alpha = np.array([significance_level / (num_tests + 1 - k) for k in range(1, num_tests + 1)])
     z_critical = norm.ppf(1 - adjusted_alpha / 2)
@@ -71,7 +71,7 @@ def holm_t_statistics(t_statistics, significance_level = 0.05):
 def bhy_t_statistics(t_statistics, significance_level = 0.05):
     num_tests = len(t_statistics)
     c_m = np.sum([1.0 / i for i in range(1, num_tests + 1)])
-    sorted_indices = np.argsort(t_statistics)  # Sort in ascending order
+    sorted_indices = np.argsort(t_statistics)[::-1] # Sort in descending order, because we use t-Statistics
     sorted_t_statistics = np.array(t_statistics)[sorted_indices]
     adjusted_alpha = np.array([k * significance_level / (num_tests * c_m) for k in range(1, num_tests + 1)])
     z_critical = norm.ppf(1 - adjusted_alpha / 2)
