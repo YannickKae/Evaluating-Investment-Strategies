@@ -69,7 +69,7 @@ $$
 
 - $\alpha$: Significance level
 - $m$: Number of tests
-- $k$: Rank of the test by descending p-value
+- $k$: Rank of the test by descending $p$-value
 
 ## Adjusting the Sharpe Ratio (Haircut)
 
