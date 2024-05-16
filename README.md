@@ -68,7 +68,7 @@ $$
   <img src="Figure_1.png" alt="k" style="width:100%">
 </p>
 <p align="center">
-  <i>Adjusted significance levels for m=10</i>
+  <i>Adjusted significance levels for $m=10$ and $\alpha=.05$</i>
 </p>
 
 ## Adjusting the Sharpe Ratio (Haircut)
