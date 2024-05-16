@@ -1,10 +1,10 @@
 # Investment Strategy Evaluation
 
 <p align="center">
-  <img src="monte_carlo_simulation_log_scale.png" alt="MC" style="width:100%">
+  <img src="Figure_1.png" alt="k" style="width:100%">
 </p>
 <p align="center">
-  <i>Monte Carlo Simulation of a Sharpe 1.0 Strategy</i>
+  <i>Adjusted significance levels for $m=10$ and $\alpha=.05$</i>
 </p>
 
 This repository contains functions for evaluating investment strategies considering multiple testing.
@@ -63,13 +63,6 @@ The BHY Method controls the False Discovery Rate (FDR) and is less conservative 
 $$
 p_{k} = \frac{k \times \alpha}{m \times \left(\frac{1}{1} + \frac{1}{2} + \ldots + \frac{1}{m}\right)}
 $$
-
-<p align="center">
-  <img src="Figure_1.png" alt="k" style="width:100%">
-</p>
-<p align="center">
-  <i>Adjusted significance levels for $m=10$ and $\alpha=.05$</i>
-</p>
 
 ## Adjusting the Sharpe Ratio (Haircut)
 
