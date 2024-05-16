@@ -66,10 +66,6 @@ $$
 p_{k} = \frac{k \times \alpha}{m \times \left(\frac{1}{1} + \frac{1}{2} + \ldots + \frac{1}{m}\right)}
 $$
 
-- $\alpha$: Significance level
-- $m$: Number of tests
-- $k$: Rank of the test by descending $p$-value
-
 ## Adjusting the Sharpe Ratio (Haircut)
 
 The Sharpe Ratio is adjusted (haircut) by plugging the adjusted test statistic into the equation to compute the $t$-statistic.
