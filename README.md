@@ -34,7 +34,7 @@ $$
 The Bonferroni Method is a conservative approach for multiple testing correction. It reduces the chance of type I errors (false positives) by dividing the significance level by the number of tests.
 
 $$
-p_{\text{adjusted}} = \min(p \times m, 1.0)
+p = \frac{\alpha}{m}
 $$
 
 - $p$: unadjusted $p$-value
@@ -57,36 +57,13 @@ $$
 The BHY Method controls the False Discovery Rate (FDR) and is less conservative than Family-wise Error Rate (FWER) methods like Bonferroni and Holm. FDR is the expected proportion of false discoveries among the rejected hypotheses.
 
 $$
-p_{k} = \frac{k \times \alpha}{M \times \sum_{i=1}^{M} \frac{1}{i}}
+p_{k} = \frac{k \times \alpha}{m \times \left(\frac{1}{1} + \frac{1}{2} + \ldots + \frac{1}{m}\right)}
 $$
 
 - $\alpha$: Significance level
-- $M$: Number of tests
-- $k$: Rank of the test by ascending p-value
-
-## 3. In-Sample (IS) and Out-of-Sample (OOS) Tests
-
-### In-Sample and Out-of-Sample Split
-
-The data is split into In-Sample (IS) and Out-of-Sample (OOS) periods to test the robustness of the trading strategy. This helps determine if the strategy performs well on unseen data and avoids overfitting.
-
-### Probability of Backtest Overfitting (PBO)
-
-The Probability of Backtest Overfitting (PBO) measures how likely it is that an IS strategy will underperform in the OOS period. It is calculated as the probability that the out-of-sample Sharpe Ratio is less than the median in-sample Sharpe Ratio.
-
-$$
-PBO = \mathbb{P}(SR_{\text{OOS}} < \text{median}(SR_{\text{IS}}))
-$$
-
-- $SR_{\text{OOS}}$: Sharpe Ratio of the out-of-sample period
-- $SR_{\text{IS}}$: Sharpe Ratio of the in-sample period
+- $m$: Number of tests
+- $k$: Rank of the test by descending p-value
 
 ## 4. Adjusting the Sharpe Ratio by Haircut
 
-### Haircutting Sharpe Ratio
-
-The Sharpe Ratio is adjusted (haircut) considering multiple testing adjustments. This adjustment accounts for the increased likelihood of finding a spurious result when multiple tests are conducted.
-
-## 5. Function to Evaluate Trading Strategies
-
-The main function integrates all the above methods to comprehensively evaluate trading strategies.
+The Sharpe Ratio is adjusted (haircut) considering multiple testing adjustments by mapping the adjusted test statistic back to the Sharpe Ratio.
