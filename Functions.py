@@ -3,7 +3,6 @@ import numpy as np
 import scipy.stats
 import pandas as pd
 
-
 # Computes the Sharpe Ratio rom a vector of returns
 def sharpe_ratio(returns, risk_free_rate=0):
     mean_return = np.mean(returns) - risk_free_rate
@@ -11,7 +10,6 @@ def sharpe_ratio(returns, risk_free_rate=0):
     sharpe_ratio = mean_return / std_dev
 
     return sharpe_ratio
-
 
 # Computes the t-Statistic from the Sharpe Ratio
 def t_statistic(sharpe_ratio, N, freq='annual'):
@@ -26,12 +24,7 @@ def t_statistic(sharpe_ratio, N, freq='annual'):
 
     return t_stat
 
-
-from scipy.stats import norm
-import numpy as np
-import pandas as pd
-
-
+# Computes the multiple testing adjusted critical values
 def bonferroni_t_statistic(t_statistics, significance_level = 0.05):
     num_tests = len(t_statistics)
     adjusted_alpha = np.array([significance_level / num_tests for _ in range(num_tests)])
@@ -46,7 +39,6 @@ def bonferroni_t_statistic(t_statistics, significance_level = 0.05):
     })
 
     return results
-
 
 def holm_t_statistics(t_statistics, significance_level = 0.05):
     num_tests = len(t_statistics)
@@ -67,7 +59,6 @@ def holm_t_statistics(t_statistics, significance_level = 0.05):
 
     return results
 
-
 def bhy_t_statistics(t_statistics, significance_level = 0.05):
     num_tests = len(t_statistics)
     c_m = np.sum([1.0 / i for i in range(1, num_tests + 1)])
@@ -87,7 +78,6 @@ def bhy_t_statistics(t_statistics, significance_level = 0.05):
     results = results.sort_values(by='Test Number').reset_index(drop=True)
 
     return results
-
 
 def necessary_t_statistics(t_statistics, significance_level, method='bonferroni'):
     if method == 'bonferroni':
