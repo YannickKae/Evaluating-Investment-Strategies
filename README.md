@@ -3,10 +3,10 @@
 This repository contains functions for evaluating investment strategies considering multiple testing.
 
 <p align="center">
-  <img src="Figure_2.png" alt="k" style="width:100%">
+  <img src="Figure_3.png" alt="k" style="width:100%">
 </p>
 <p align="center">
-  <i>Adjusted critical $t$-values for $m=10$ and $\alpha=.05$</i>
+  <i>Adjusted critical $t$-values for $m=100$ and $\alpha=.05$</i>
 </p>
 
 ## Sharpe Ratio and $t$-Statistic
