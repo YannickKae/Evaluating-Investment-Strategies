@@ -93,6 +93,8 @@ def haircut_sharpe_ratio(returns, risk_free_rate, num_tests, k=1, method='bonfer
     N = len(returns)
     t = t_statistic(returns, risk_free_rate)
     p = 2 * scipy.stats.norm.sf(abs(t))
+    min_p_value = 1e-10
+    p = max(p, min_p_value)
     if method == 'bonferroni':
         p_adj = min(p * num_tests, 1)
     elif method == 'holm':
@@ -113,24 +115,35 @@ def evaluate_strategies(returns_matrix, risk_free_rate=0):
     N = returns_matrix.shape[0]
 
     original_sharpe_ratios = []
+    t_statistics = []
+    for i in range(num_strategies):
+        returns = returns_matrix[:, i]
+        sr = sharpe_ratio(returns, risk_free_rate)
+        t_stat = t_statistic(returns, risk_free_rate)
+        original_sharpe_ratios.append(sr)
+        t_statistics.append(t_stat)
+
+    # Sort indices based on t_statistics in descending order
+    sorted_indices = np.argsort(t_statistics)[::-1]
+
+    # Compute adjusted Sharpe Ratios
     haircut_sharpe_ratios_bonferroni = []
     haircut_sharpe_ratios_holm = []
     haircut_sharpe_ratios_bhy = []
 
-    for i in range(num_strategies):
-        returns = returns_matrix[:, i]
-        sr = sharpe_ratio(returns, risk_free_rate)
-        original_sharpe_ratios.append(sr)
-        haircut_sharpe_ratios_bonferroni.append(haircut_sharpe_ratio(returns, risk_free_rate, num_strategies, k=i+1, method='bonferroni'))
-        haircut_sharpe_ratios_holm.append(haircut_sharpe_ratio(returns, risk_free_rate, num_strategies, k=i+1, method='holm'))
-        haircut_sharpe_ratios_bhy.append(haircut_sharpe_ratio(returns, risk_free_rate, num_strategies, k=i+1, method='bhy'))
+    for k, idx in enumerate(sorted_indices):
+        returns = returns_matrix[:, idx]
+        haircut_sharpe_ratios_bonferroni.append(haircut_sharpe_ratio(returns, risk_free_rate, num_strategies, k=k+1, method='bonferroni'))
+        haircut_sharpe_ratios_holm.append(haircut_sharpe_ratio(returns, risk_free_rate, num_strategies, k=k+1, method='holm'))
+        haircut_sharpe_ratios_bhy.append(haircut_sharpe_ratio(returns, risk_free_rate, num_strategies, k=k+1, method='bhy'))
 
+    # Arrange the results in the sorted order
     results = pd.DataFrame({
-        'Strategy': np.arange(1, num_strategies + 1),
-        'Original SR': original_sharpe_ratios,
-        'SR (Bonferroni)': haircut_sharpe_ratios_bonferroni,
-        'SR (Holm)': haircut_sharpe_ratios_holm,
-        'SR (BHY)': haircut_sharpe_ratios_bhy
+        'Strategy': sorted_indices + 1,
+        'Original': np.array(original_sharpe_ratios)[sorted_indices],
+        'Bonferroni': haircut_sharpe_ratios_bonferroni,
+        'Holm': haircut_sharpe_ratios_holm,
+        'BHY': haircut_sharpe_ratios_bhy
     })
 
     return results
