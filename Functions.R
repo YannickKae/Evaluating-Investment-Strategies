@@ -1,6 +1,7 @@
 # Packages
 library(dplyr)
-library(stats)
+library(tidyr)
+library(purrr)
 
 # Computes the Sharpe Ratio from a vector of returns
 sharpe_ratio <- function(returns, risk_free_rate = 0) {
@@ -11,22 +12,16 @@ sharpe_ratio <- function(returns, risk_free_rate = 0) {
   return(sharpe_ratio)
 }
 
-# Computes the t-Statistic from the Sharpe Ratio
-t_statistic <- function(sharpe_ratio, N, freq = 'annual') {
-  if (freq == 'annual') {
-    t_stat <- sharpe_ratio * sqrt(N)
-  } else if (freq == 'monthly') {
-    t_stat <- sharpe_ratio * sqrt(12 * N)
-  } else if (freq == 'daily') {
-    t_stat <- sharpe_ratio * sqrt(252 * N)
-  } else {
-    stop("Frequency must be 'annual', 'monthly', or 'daily'")
-  }
+# Computes the t-Statistic from a vector of returns
+t_statistic <- function(returns, risk_free_rate = 0) {
+  N <- length(returns)
+  sr <- sharpe_ratio(returns, risk_free_rate)
+  t_stat <- sr * sqrt(N)
   
   return(t_stat)
 }
 
-# Computes the multiple testing adjusted critical values
+# Computes the multiple testing adjusted critical t-values by the Bonferroni method
 bonferroni_t_statistic <- function(t_statistics, significance_level = 0.05) {
   num_tests <- length(t_statistics)
   adjusted_alpha <- rep(significance_level / num_tests, num_tests)
@@ -43,6 +38,7 @@ bonferroni_t_statistic <- function(t_statistics, significance_level = 0.05) {
   return(results)
 }
 
+# Computes the multiple testing adjusted critical t-values by the Holm method
 holm_t_statistics <- function(t_statistics, significance_level = 0.05) {
   num_tests <- length(t_statistics)
   sorted_indices <- order(t_statistics, decreasing = TRUE)
@@ -56,13 +52,14 @@ holm_t_statistics <- function(t_statistics, significance_level = 0.05) {
     Necessary_t_Statistic = z_critical,
     Necessary_p_Value = adjusted_alpha,
     Success = as.integer(sorted_t_statistics > z_critical)
-  )
-  
-  results <- results %>% arrange(Test_Number)
+  ) %>%
+    arrange(Test_Number) %>%
+    mutate(Test_Number = row_number())
   
   return(results)
 }
 
+# Computes the multiple testing adjusted critical t-values by the BHY method
 bhy_t_statistics <- function(t_statistics, significance_level = 0.05) {
   num_tests <- length(t_statistics)
   c_m <- sum(1 / 1:num_tests)
@@ -77,13 +74,14 @@ bhy_t_statistics <- function(t_statistics, significance_level = 0.05) {
     Necessary_t_Statistic = z_critical,
     Necessary_p_Value = adjusted_alpha,
     Success = as.integer(sorted_t_statistics > z_critical)
-  )
-  
-  results <- results %>% arrange(Test_Number)
+  ) %>%
+    arrange(Test_Number) %>%
+    mutate(Test_Number = row_number())
   
   return(results)
 }
 
+# Bundles all functions to compute the adjusted critical t-values
 necessary_t_statistics <- function(t_statistics, significance_level, method = 'bonferroni') {
   if (method == 'bonferroni') {
     return(bonferroni_t_statistic(t_statistics, significance_level))
@@ -97,9 +95,10 @@ necessary_t_statistics <- function(t_statistics, significance_level, method = 'b
 }
 
 # Sharpe Ratio Haircut
-haircut_sharpe_ratio <- function(sharpe_ratio, num_tests, N, k = 1, freq = 'annual', method = 'bonferroni') {
-  t <- t_statistic(sharpe_ratio, N, freq)
-  p <- 2 * pnorm(abs(t), lower.tail = FALSE)
+haircut_sharpe_ratio <- function(returns, risk_free_rate, num_tests, k = 1, method = 'bonferroni') {
+  N <- length(returns)
+  t <- t_statistic(returns, risk_free_rate)
+  p <- 2 * (1 - pnorm(abs(t)))
   if (method == 'bonferroni') {
     p_adj <- min(p * num_tests, 1)
   } else if (method == 'holm') {
@@ -114,4 +113,34 @@ haircut_sharpe_ratio <- function(sharpe_ratio, num_tests, N, k = 1, freq = 'annu
   SR_adj <- t_adj / sqrt(N)
   
   return(SR_adj)
+}
+
+# Evaluate all strategies
+evaluate_strategies <- function(returns_matrix, risk_free_rate = 0) {
+  num_strategies <- ncol(returns_matrix)
+  N <- nrow(returns_matrix)
+  
+  original_sharpe_ratios <- numeric(num_strategies)
+  haircut_sharpe_ratios_bonferroni <- numeric(num_strategies)
+  haircut_sharpe_ratios_holm <- numeric(num_strategies)
+  haircut_sharpe_ratios_bhy <- numeric(num_strategies)
+  
+  for (i in 1:num_strategies) {
+    returns <- returns_matrix[, i]
+    sr <- sharpe_ratio(returns, risk_free_rate)
+    original_sharpe_ratios[i] <- sr
+    haircut_sharpe_ratios_bonferroni[i] <- haircut_sharpe_ratio(returns, risk_free_rate, num_strategies, k = i, method = 'bonferroni')
+    haircut_sharpe_ratios_holm[i] <- haircut_sharpe_ratio(returns, risk_free_rate, num_strategies, k = i, method = 'holm')
+    haircut_sharpe_ratios_bhy[i] <- haircut_sharpe_ratio(returns, risk_free_rate, num_strategies, k = i, method = 'bhy')
+  }
+  
+  results <- data.frame(
+    Strategy = 1:num_strategies,
+    Original_SR = original_sharpe_ratios,
+    SR_Bonferroni = haircut_sharpe_ratios_bonferroni,
+    SR_Holm = haircut_sharpe_ratios_holm,
+    SR_BHY = haircut_sharpe_ratios_bhy
+  )
+  
+  return(results)
 }
