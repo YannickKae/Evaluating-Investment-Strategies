@@ -35,7 +35,7 @@ $$
 
 ## Multiple Testing Adjustments
 
-### Bonferroni Method [`bonferroni_t_statistic`]
+### Bonferroni [`bonferroni_t_statistic`]
 
 The Bonferroni Method is a conservative approach for multiple testing correction. It reduces the chance of type I errors (false positives) by dividing the significance level by the number of tests.
 
@@ -47,7 +47,7 @@ $$
 - $\alpha$: Significance level
 - $m$: Number of tests
 
-### Holm Method [`holm_t_statistic`]
+### Holm [`holm_t_statistic`]
 
 The Holm Method is a stepwise correction that is less conservative than the Bonferroni Method. It adjusts the $p$-values sequentially, starting from the most significant one, and ensures that the type 1 error rate is maintained across multiple tests.
 
@@ -57,7 +57,7 @@ $$
 
 - $k$: Index of the test sorted by ascending $p$-value
 
-### Benjamini-Hochberg-Yekutieli Method [`bhy_t_statistic`]
+### Benjamini-Hochberg-Yekutieli [`bhy_t_statistic`]
 
 The BHY Method controls the False Discovery Rate (FDR) and is less conservative than Family-wise Error Rate (FWER) methods like Bonferroni and Holm. FDR is the expected proportion of false discoveries among the rejected hypotheses.
 
