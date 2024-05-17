@@ -40,9 +40,10 @@ $$
 The Bonferroni Method is a conservative approach for multiple testing correction. It reduces the chance of type I errors (false positives) by dividing the significance level by the number of tests.
 
 $$
-p = \frac{\alpha}{m}
+t = \Phi^{-1}\left(1 - \frac{\alpha}{2m}\right)
 $$
 
+- $\Phi$: CDF of the standard normal distribution
 - $\alpha$: Significance level
 - $m$: Number of tests
 
@@ -51,7 +52,7 @@ $$
 The Holm Method is a stepwise correction that is less conservative than the Bonferroni Method. It adjusts the $p$-values sequentially, starting from the most significant one, and ensures that the type 1 error rate is maintained across multiple tests.
 
 $$
-p_{k} = \frac{\alpha}{m + 1 - k}
+t_{k} = \Phi^{-1}\left(1 - \frac{\alpha}{2(m + 1 - k)}\right)
 $$
 
 - $k$: Index of the test sorted by ascending $p$-value
@@ -61,7 +62,7 @@ $$
 The BHY Method controls the False Discovery Rate (FDR) and is less conservative than Family-wise Error Rate (FWER) methods like Bonferroni and Holm. FDR is the expected proportion of false discoveries among the rejected hypotheses.
 
 $$
-p_{k} = \frac{k \times \alpha}{m \times \left(\frac{1}{1} + \frac{1}{2} + \ldots + \frac{1}{m}\right)}
+t_{k} = \Phi^{-1}\left(1 - \frac{k \times \alpha}{2m \times \left(\frac{1}{1} + \frac{1}{2} + \cdots + \frac{1}{m}\right)}\right)
 $$
 
 ## Adjusting the Sharpe Ratio
