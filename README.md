@@ -77,6 +77,4 @@ $$
 
 ### Evaluating Investment Strategies [`evaluate_strategies`]
 
-**IMPORTANT: This function is still in progress.**
-
 This function takes a $N \times m$ matrix of returns, where each column belongs to a strategy tested, and outputs a table with the unadjusted and adjusted Sharpe ratios.
