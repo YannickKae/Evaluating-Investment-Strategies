@@ -67,7 +67,7 @@ $$
 
 ## Adjusting the Sharpe Ratio [`haircut_sharpe_ratio`]
 
-The Sharpe Ratio is adjusted by plugging the adjusted  $t$-statistic into the rearranged equation to compute the $t$-statistic from the Sharpe Ratio.
+The Sharpe Ratio is adjusted by plugging the adjusted $t$-statistic into the rearranged equation to compute the $t$-statistic from the Sharpe Ratio.
 
 $$
 SR_{adj} = \frac{t_{adj}}{\sqrt{N}}
