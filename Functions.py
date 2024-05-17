@@ -11,20 +11,15 @@ def sharpe_ratio(returns, risk_free_rate=0):
 
     return sharpe_ratio
 
-# Computes the t-Statistic from the Sharpe Ratio
-def t_statistic(sharpe_ratio, N, freq='annual'):
-    if freq == 'annual':
-        t_stat = sharpe_ratio * np.sqrt(N)
-    elif freq == 'monthly':
-        t_stat = sharpe_ratio * np.sqrt(12 * N)
-    elif freq == 'daily':
-        t_stat = sharpe_ratio * np.sqrt(252 * N)
-    else:
-        raise ValueError("Frequency must be 'annual', 'monthly', or 'daily'")
+# Computes the t-Statistic rom a vector of returns
+def t_statistic(returns, risk_free_rate=0):
+    N = len(returns)
+    sr = sharpe_ratio(returns, risk_free_rate)
+    t_stat = sr * np.sqrt(N)
 
     return t_stat
 
-# Computes the multiple testing adjusted critical values
+# Computes the multiple testing adjusted critical t-values by the Bonferroni method
 def bonferroni_t_statistic(t_statistics, significance_level = 0.05):
     num_tests = len(t_statistics)
     adjusted_alpha = np.array([significance_level / num_tests for _ in range(num_tests)])
@@ -40,6 +35,7 @@ def bonferroni_t_statistic(t_statistics, significance_level = 0.05):
 
     return results
 
+# Computes the multiple testing adjusted critical t-values by the Holm method
 def holm_t_statistics(t_statistics, significance_level = 0.05):
     num_tests = len(t_statistics)
     sorted_indices = np.argsort(t_statistics)[::-1]  # Sort in descending order, because we use t-Statistics
@@ -59,6 +55,7 @@ def holm_t_statistics(t_statistics, significance_level = 0.05):
 
     return results
 
+# Computes the multiple testing adjusted critical t-values by the BHY method
 def bhy_t_statistics(t_statistics, significance_level = 0.05):
     num_tests = len(t_statistics)
     c_m = np.sum([1.0 / i for i in range(1, num_tests + 1)])
@@ -79,6 +76,7 @@ def bhy_t_statistics(t_statistics, significance_level = 0.05):
 
     return results
 
+# Bundles all functions to compute the adjusted critical t-values
 def necessary_t_statistics(t_statistics, significance_level, method='bonferroni'):
     if method == 'bonferroni':
         return bonferroni_t_statistic(t_statistics, significance_level)
@@ -91,8 +89,9 @@ def necessary_t_statistics(t_statistics, significance_level, method='bonferroni'
 
 
 # Sharpe Ratio Haircut
-def haircut_sharpe_ratio(sharpe_ratio, num_tests, N, k=1, freq='annual', method='bonferroni'):
-    t = t_statistic(sharpe_ratio, N, freq='annual')
+def haircut_sharpe_ratio(returns, risk_free_rate, num_tests, k=1, method='bonferroni'):
+    N = len(returns)
+    t = t_statistic(returns, risk_free_rate)
     p = 2 * scipy.stats.norm.sf(abs(t))
     if method == 'bonferroni':
         p_adj = min(p * num_tests, 1)
@@ -107,3 +106,31 @@ def haircut_sharpe_ratio(sharpe_ratio, num_tests, N, k=1, freq='annual', method=
     SR_adj = t_adj / np.sqrt(N)
 
     return SR_adj
+
+# Evaluate all strategies
+def evaluate_strategies(returns_matrix, risk_free_rate=0):
+    num_strategies = returns_matrix.shape[1]
+    N = returns_matrix.shape[0]
+
+    original_sharpe_ratios = []
+    haircut_sharpe_ratios_bonferroni = []
+    haircut_sharpe_ratios_holm = []
+    haircut_sharpe_ratios_bhy = []
+
+    for i in range(num_strategies):
+        returns = returns_matrix[:, i]
+        sr = sharpe_ratio(returns, risk_free_rate)
+        original_sharpe_ratios.append(sr)
+        haircut_sharpe_ratios_bonferroni.append(haircut_sharpe_ratio(returns, risk_free_rate, num_strategies, k=i+1, method='bonferroni'))
+        haircut_sharpe_ratios_holm.append(haircut_sharpe_ratio(returns, risk_free_rate, num_strategies, k=i+1, method='holm'))
+        haircut_sharpe_ratios_bhy.append(haircut_sharpe_ratio(returns, risk_free_rate, num_strategies, k=i+1, method='bhy'))
+
+    results = pd.DataFrame({
+        'Strategy': np.arange(1, num_strategies + 1),
+        'Original SR': original_sharpe_ratios,
+        'SR (Bonferroni)': haircut_sharpe_ratios_bonferroni,
+        'SR (Holm)': haircut_sharpe_ratios_holm,
+        'SR (BHY)': haircut_sharpe_ratios_bhy
+    })
+
+    return results
