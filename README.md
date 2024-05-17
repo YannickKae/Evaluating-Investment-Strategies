@@ -65,10 +65,16 @@ $$
 t_{k} = \Phi^{-1}\left(1 - \frac{k \times \alpha}{2m \times \left(\frac{1}{1} + \frac{1}{2} + \cdots + \frac{1}{m}\right)}\right)
 $$
 
-## Adjusting the Sharpe Ratio [`haircut_sharpe_ratio`]
+## Strategy Evaluation
+
+### Adjusting the Sharpe Ratio [`haircut_sharpe_ratio`]
 
 The Sharpe Ratio is adjusted by plugging the adjusted $t$-statistic into the rearranged equation to compute the $t$-statistic from the Sharpe Ratio.
 
 $$
 SR_{adj} = \frac{t_{adj}}{\sqrt{N}}
 $$
+
+### Evaluating Investment Strategies [`evaluate_strategies`]
+
+This function takes a $N \times m$ matrix of returns, where each column belongs to a strategy tested, and outputs a table with the unadjusted and adjusted Sharpe ratios.
