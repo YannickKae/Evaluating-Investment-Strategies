@@ -43,7 +43,7 @@ $$
 t = \Phi^{-1}\left(1 - \frac{\alpha}{2m}\right)
 $$
 
-- $\Phi$: CDF of the standard normal distribution
+- $\Phi$: CDF of the standard normal
 - $\alpha$: Significance level
 - $m$: Number of tests
 
