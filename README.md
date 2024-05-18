@@ -69,10 +69,10 @@ $$
 
 ### Adjusting the Sharpe Ratio [`haircut_sharpe_ratio`]
 
-The Sharpe Ratio is adjusted by plugging the adjusted $t$-statistic into the rearranged equation to compute the $t$-statistic from the Sharpe Ratio.
+The Sharpe Ratio is corrected by plugging the corrected $t$-statistic into the rearranged equation to compute the $t$-statistic from the Sharpe Ratio.
 
 $$
-SR_{adj} = \frac{t_{adj}}{\sqrt{N}}
+SR_{cor} = \frac{t_{cor}}{\sqrt{N}}
 $$
 
 ### Evaluating Investment Strategies [`evaluate_strategies`]
