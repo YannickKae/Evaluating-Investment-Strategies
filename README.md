@@ -33,7 +33,7 @@ $$
 
 - $N$: Number of returns
 
-## Multiple Testing Adjustments
+## Multiple Testing Adjustments of critical $t$-values
 
 ### Bonferroni [`bonferroni_t_statistic`]
 
