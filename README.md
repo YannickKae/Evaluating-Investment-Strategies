@@ -1,6 +1,6 @@
 # Investment Strategy Evaluation
 
-This repository contains functions for evaluating investment strategies considering multiple testing.
+Testing multiple investment strategies until you find one with a high Sharpe Ratio inflates the probability of finding something that looks good by pure chance (Type I error). This repository contains functions for evaluating investment strategies considering multiple testing.
 
 <p align="center">
   <img src="Figure_3.png" alt="k" style="width:100%">
