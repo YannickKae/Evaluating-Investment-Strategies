@@ -19,7 +19,7 @@ $$
 SR = \frac{\mu - r_f}{\sigma}
 $$
 
-When testing $m$ independent strategies, the expected Sharpe Ratio of the best strategy $SR_{max}$ can be approximated
+When testing $m$ independent strategies, the expected Sharpe Ratio of the best strategy $SR_{max}$ can be approximated by
 
 $$
 S_{\text{max}} \approx \sqrt{\frac{2 \log(m)}{\sqrt{N}}}
