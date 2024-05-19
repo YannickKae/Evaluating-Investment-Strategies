@@ -19,10 +19,10 @@ $$
 SR = \frac{\mu - r_f}{\sigma}
 $$
 
-When testing $m$ independent strategies, the Sharpe Ratio of the best strategy $SR_{max}$ can be approximated using Extreme Value Theory. Inverting this equation yields the number of strategies needed to find one with a given Sharpe Ratio $SR$:
+When testing $m$ independent strategies, the expected Sharpe Ratio of the best strategy $SR_{max}$ can be approximated
 
 $$
-S_{\text{max}} \approx \frac{\sqrt{2 \log(m)}}{\sqrt{N}}
+S_{\text{max}} \approx \sqrt{\frac{2 \log(m)}{\sqrt{N}}}
 $$
 
 - $\mu$: Mean return
