@@ -25,7 +25,7 @@ $$
 
 ### Expected maximum Sharpe Ratio [`expected_max_sharpe_ratio`]
 
-When testing $M$ independent strategies, the expected Sharpe Ratio of the best strategy $SR_{max}$ can be approximated by
+When testing $M$ strategies, the expected beste Sharpe Ratio $SR_{max}$ can be approximated by
 
 $$
 \mathbf{E}[SR_{max}] \approx \mathbf{E}[SR_{m}] + \sqrt{\mathbf{Var}[SR_{m}]} \left( (1 - \gamma) \Phi^{-1} \left[ 1 - \frac{1}{N} \right] + \gamma \Phi^{-1} \left[ 1 - \frac{1}{N}e^{-1} \right] \right)
