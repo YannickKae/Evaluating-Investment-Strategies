@@ -1,9 +1,8 @@
 ### STILL in PROGRESS ###
 
-# Packages
+# Libraries
+library(stats)
 library(dplyr)
-library(tidyr)
-library(purrr)
 
 # Computes the Sharpe Ratio from a vector of returns
 sharpe_ratio <- function(returns, risk_free_rate = 0) {
@@ -12,6 +11,14 @@ sharpe_ratio <- function(returns, risk_free_rate = 0) {
   sharpe_ratio <- mean_return / std_dev
   
   return(sharpe_ratio)
+}
+
+# Expected maximum Sharpe ratio
+expected_max_sharpe_ratio <- function(mean_sharpe, var_sharpe, M) {
+  gamma <- 0.5772156649015328606 # Euler-Mascheroni constant
+  result <- mean_sharpe + sqrt(var_sharpe) * ((1 - gamma) * qnorm(1 - 1 / M) + gamma * qnorm(1 - 1 / (M * exp(1))))
+  
+  return(result)
 }
 
 # Computes the t-Statistic from a vector of returns
@@ -54,9 +61,10 @@ holm_t_statistics <- function(t_statistics, significance_level = 0.05) {
     Necessary_t_Statistic = z_critical,
     Necessary_p_Value = adjusted_alpha,
     Success = as.integer(sorted_t_statistics > z_critical)
-  ) %>%
-    arrange(Test_Number) %>%
-    mutate(Test_Number = row_number())
+  )
+  
+  results <- results[order(results$Test_Number), ]
+  rownames(results) <- NULL
   
   return(results)
 }
@@ -76,9 +84,10 @@ bhy_t_statistics <- function(t_statistics, significance_level = 0.05) {
     Necessary_t_Statistic = z_critical,
     Necessary_p_Value = adjusted_alpha,
     Success = as.integer(sorted_t_statistics > z_critical)
-  ) %>%
-    arrange(Test_Number) %>%
-    mutate(Test_Number = row_number())
+  )
+  
+  results <- results[order(results$Test_Number), ]
+  rownames(results) <- NULL
   
   return(results)
 }
@@ -100,7 +109,10 @@ necessary_t_statistics <- function(t_statistics, significance_level, method = 'b
 haircut_sharpe_ratio <- function(returns, risk_free_rate, num_tests, k = 1, method = 'bonferroni') {
   N <- length(returns)
   t <- t_statistic(returns, risk_free_rate)
-  p <- 2 * (1 - pnorm(abs(t)))
+  p <- 2 * pnorm(-abs(t))
+  min_p_value <- 1e-10
+  p <- max(p, min_p_value)
+  
   if (method == 'bonferroni') {
     p_adj <- min(p * num_tests, 1)
   } else if (method == 'holm') {
@@ -111,6 +123,7 @@ haircut_sharpe_ratio <- function(returns, risk_free_rate, num_tests, k = 1, meth
   } else {
     stop("Method must be 'bonferroni', 'holm', or 'bhy'")
   }
+  
   t_adj <- qnorm(1 - p_adj / 2)
   SR_adj <- t_adj / sqrt(N)
   
@@ -122,26 +135,37 @@ evaluate_strategies <- function(returns_matrix, risk_free_rate = 0) {
   num_strategies <- ncol(returns_matrix)
   N <- nrow(returns_matrix)
   
-  original_sharpe_ratios <- numeric(num_strategies)
-  haircut_sharpe_ratios_bonferroni <- numeric(num_strategies)
-  haircut_sharpe_ratios_holm <- numeric(num_strategies)
-  haircut_sharpe_ratios_bhy <- numeric(num_strategies)
+  original_sharpe_ratios <- c()
+  t_statistics <- c()
   
   for (i in 1:num_strategies) {
     returns <- returns_matrix[, i]
     sr <- sharpe_ratio(returns, risk_free_rate)
-    original_sharpe_ratios[i] <- sr
-    haircut_sharpe_ratios_bonferroni[i] <- haircut_sharpe_ratio(returns, risk_free_rate, num_strategies, k = i, method = 'bonferroni')
-    haircut_sharpe_ratios_holm[i] <- haircut_sharpe_ratio(returns, risk_free_rate, num_strategies, k = i, method = 'holm')
-    haircut_sharpe_ratios_bhy[i] <- haircut_sharpe_ratio(returns, risk_free_rate, num_strategies, k = i, method = 'bhy')
+    t_stat <- t_statistic(returns, risk_free_rate)
+    original_sharpe_ratios <- c(original_sharpe_ratios, sr)
+    t_statistics <- c(t_statistics, t_stat)
+  }
+  
+  sorted_indices <- order(t_statistics, decreasing = TRUE)
+  
+  haircut_sharpe_ratios_bonferroni <- c()
+  haircut_sharpe_ratios_holm <- c()
+  haircut_sharpe_ratios_bhy <- c()
+  
+  for (k in 1:length(sorted_indices)) {
+    idx <- sorted_indices[k]
+    returns <- returns_matrix[, idx]
+    haircut_sharpe_ratios_bonferroni <- c(haircut_sharpe_ratios_bonferroni, haircut_sharpe_ratio(returns, risk_free_rate, num_strategies, k = k, method = 'bonferroni'))
+    haircut_sharpe_ratios_holm <- c(haircut_sharpe_ratios_holm, haircut_sharpe_ratio(returns, risk_free_rate, num_strategies, k = k, method = 'holm'))
+    haircut_sharpe_ratios_bhy <- c(haircut_sharpe_ratios_bhy, haircut_sharpe_ratio(returns, risk_free_rate, num_strategies, k = k, method = 'bhy'))
   }
   
   results <- data.frame(
-    Strategy = 1:num_strategies,
-    Original_SR = original_sharpe_ratios,
-    SR_Bonferroni = haircut_sharpe_ratios_bonferroni,
-    SR_Holm = haircut_sharpe_ratios_holm,
-    SR_BHY = haircut_sharpe_ratios_bhy
+    Strategy = sorted_indices,
+    Original = original_sharpe_ratios[sorted_indices],
+    Bonferroni = haircut_sharpe_ratios_bonferroni,
+    Holm = haircut_sharpe_ratios_holm,
+    BHY = haircut_sharpe_ratios_bhy
   )
   
   return(results)
