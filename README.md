@@ -19,9 +19,17 @@ $$
 SR = \frac{\mu - r_f}{\sigma}
 $$
 
+When testing $m$ independent strategies, the Sharpe Ratio of the best strategy $SR_{max}$ can be approximated using Extreme Value Theory. Inverting this equation yields the number of strategies needed to find one with a given Sharpe Ratio $SR$:
+
+$$
+S_{\text{max}} \approx \frac{\sqrt{2 \log(m)}}{\sqrt{N}}
+$$
+
 - $\mu$: Mean return
 - $r_f$: Risk-free rate
 - $\sigma$: Standard deviation of the return
+- $N$: Number of returns
+- $m$: Number of tests
 
 ### $t$-Statistic [`t_statistic`]
 
@@ -30,8 +38,6 @@ The $t$-Statistic here refers to the average excess return and is a scaled funct
 $$
 t = \frac{\mu - r_f}{\sigma} \times \sqrt{N} = SR \times \sqrt{N}
 $$
-
-- $N$: Number of returns
 
 ## Multiple Testing Adjustments of critical $t$-values
 
@@ -45,7 +51,6 @@ $$
 
 - $\Phi$: CDF of the standard normal
 - $\alpha$: Significance level
-- $m$: Number of tests
 
 ### Holm [`holm_t_statistic`]
 
