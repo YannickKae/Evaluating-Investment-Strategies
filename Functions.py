@@ -13,7 +13,8 @@ def sharpe_ratio(returns, risk_free_rate=0):
 
 # Expected maximum Sharpe ratio
 def expected_max_sharpe_ratio(mean_sharpe, var_sharpe, nb_trials):
-    result = mean_sharpe + np.sqrt(var_sharpe) * ((1 - gamma) * scipy.stats.norm.ppf(1 - 1 / nb_trials) + gamma * scipy.stats.norm.ppf(1 - 1 / (nb_trials * e)))
+    gamma = 0.5772156649015328606
+    result = mean_sharpe + np.sqrt(var_sharpe) * ((1 - gamma) * scipy.stats.norm.ppf(1 - 1 / nb_trials) + gamma * scipy.stats.norm.ppf(1 - 1 / (nb_trials * np.exp(1))))
 
     return result
 
