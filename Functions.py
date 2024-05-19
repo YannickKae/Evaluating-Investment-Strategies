@@ -4,12 +4,20 @@ import scipy.stats
 import pandas as pd
 
 # Computes the Sharpe Ratio rom a vector of returns
-def sharpe_ratio(returns, risk_free_rate=0):
+def sharpe_ratio(returns, risk_free_rate=0, m=1):
     mean_return = np.mean(returns) - risk_free_rate
     std_dev = np.std(returns, ddof=1)
     sharpe_ratio = mean_return / std_dev
+    S_max = np.sqrt(2 * np.log(m) / np.sqrt(len(returns)))
 
-    return sharpe_ratio
+    result = {
+        'sharpe_ratio': sharpe_ratio,
+        'mean_return': mean_return,
+        'std_dev': std_dev,
+        'max_sharpe_ratio': S_max
+    }
+
+    return result
 
 # Computes the t-Statistic rom a vector of returns
 def t_statistic(returns, risk_free_rate=0):
