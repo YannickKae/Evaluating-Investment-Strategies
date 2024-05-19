@@ -31,6 +31,7 @@ $$
 \mathbf{E}[SR_{max}] \approx \mathbf{E}[SR_{m}] + \sqrt{\mathbf{Var}[SR_{m}]} \left( (1 - \gamma) \Phi^{-1} \left( 1 - \frac{1}{N} \right) + \gamma \Phi^{-1} \left( 1 - \frac{1}{N}e^{-1} \right) \right)
 $$
 
+- $\Phi$: CDF of the standard normal
 - $\gamma$: Euler-Mascheroni constant
 - $N$: Number of returns
 - $M$: Number of tests
@@ -53,7 +54,6 @@ $$
 t = \Phi^{-1}\left(1 - \frac{\alpha}{2m}\right)
 $$
 
-- $\Phi$: CDF of the standard normal
 - $\alpha$: Significance level
 
 ### Holm [`holm_t_statistic`]
