@@ -23,14 +23,17 @@ $$
 - $r_f$: Risk-free rate
 - $\sigma$: Standard deviation of the return
 
-When testing $m$ independent strategies, the expected Sharpe Ratio of the best strategy $SR_{max}$ can be approximated by
+### Expected maximum Sharpe Ratio [`expected_max_sharpe_ratio`]
+
+When testing $M$ independent strategies, the expected Sharpe Ratio of the best strategy $SR_{max}$ can be approximated by
 
 $$
-S_{\text{max}} \approx \sqrt{\frac{2 \log(m)}{\sqrt{N}}}
+\mathbf{E}[SR_{max}] \approx \mathbf{E}[SR_{m}] + \sqrt{\mathbf{Var}[SR_{m}]} \left( (1 - \gamma) \Phi^{-1} \left[ 1 - \frac{1}{N} \right] + \gamma \Phi^{-1} \left[ 1 - \frac{1}{N}e^{-1} \right] \right)
 $$
 
+- $\gamma$: Euler-Mascheroni constant
 - $N$: Number of returns
-- $m$: Number of tests
+- $M$: Number of tests
 
 ### $t$-Statistic [`t_statistic`]
 
@@ -58,7 +61,7 @@ $$
 The Holm Method is a stepwise correction that is less conservative than the Bonferroni Method. It adjusts the $p$-values sequentially, starting from the most significant one, and ensures that the type 1 error rate is maintained across multiple tests.
 
 $$
-t_{k} = \Phi^{-1}\left(1 - \frac{\alpha}{2(m + 1 - k)}\right)
+t_{k} = \Phi^{-1}\left(1 - \frac{\alpha}{2(M + 1 - k)}\right)
 $$
 
 - $k$: Index of the test sorted by ascending $p$-value
@@ -68,7 +71,7 @@ $$
 The BHY Method controls the False Discovery Rate (FDR) and is less conservative than Family-wise Error Rate (FWER) methods like Bonferroni and Holm. FDR is the expected proportion of false discoveries among the rejected hypotheses.
 
 $$
-t_{k} = \Phi^{-1}\left(1 - \frac{k \times \alpha}{2m \times \left(\frac{1}{1} + \frac{1}{2} + \cdots + \frac{1}{m}\right)}\right)
+t_{k} = \Phi^{-1}\left(1 - \frac{k \times \alpha}{2m \times \left(\frac{1}{1} + \frac{1}{2} + \cdots + \frac{1}{M}\right)}\right)
 $$
 
 ## Strategy Evaluation
