@@ -19,15 +19,16 @@ $$
 SR = \frac{\mu - r_f}{\sigma}
 $$
 
+- $\mu$: Mean return
+- $r_f$: Risk-free rate
+- $\sigma$: Standard deviation of the return
+
 When testing $m$ independent strategies, the expected Sharpe Ratio of the best strategy $SR_{max}$ can be approximated by
 
 $$
 S_{\text{max}} \approx \sqrt{\frac{2 \log(m)}{\sqrt{N}}}
 $$
 
-- $\mu$: Mean return
-- $r_f$: Risk-free rate
-- $\sigma$: Standard deviation of the return
 - $N$: Number of returns
 - $m$: Number of tests
 
