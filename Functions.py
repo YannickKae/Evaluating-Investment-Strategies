@@ -4,18 +4,16 @@ import scipy.stats
 import pandas as pd
 
 # Computes the Sharpe Ratio rom a vector of returns
-def sharpe_ratio(returns, risk_free_rate=0, m=1):
+def sharpe_ratio(returns, risk_free_rate=0):
     mean_return = np.mean(returns) - risk_free_rate
     std_dev = np.std(returns, ddof=1)
     sharpe_ratio = mean_return / std_dev
-    S_max = np.sqrt(2 * np.log(m) / np.sqrt(len(returns)))
+    
+    return sharpe_ratio
 
-    result = {
-        'sharpe_ratio': sharpe_ratio,
-        'mean_return': mean_return,
-        'std_dev': std_dev,
-        'max_sharpe_ratio': S_max
-    }
+# Expected maximum Sharpe ratio
+def expected_max_sharpe_ratio(mean_sharpe, var_sharpe, nb_trials):
+    result = mean_sharpe + np.sqrt(var_sharpe) * ((1 - gamma) * scipy.stats.norm.ppf(1 - 1 / nb_trials) + gamma * scipy.stats.norm.ppf(1 - 1 / (nb_trials * e)))
 
     return result
 
