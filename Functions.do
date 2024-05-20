@@ -1,3 +1,5 @@
+*** STILL in PROGRESS ***
+
 * Computes the Sharpe Ratio from a vector of returns
 program define sharpe_ratio
     syntax varlist(min=1 max=1) [, RiskFreeRate(real 0)]
